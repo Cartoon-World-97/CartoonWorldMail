@@ -19,11 +19,17 @@ mail = Mail(app)
 
 @app.route("/send-mail", methods=["POST"])
 def send_mail():
-    data = request.json
+    data = request.get_json(silent=True)
+
+    if not data or "to" not in data:
+        return jsonify({
+            "success": False,
+            "error": "'to' field is required"
+        }), 400
 
     msg = Message(
         subject=data.get("subject", "Hello from Flask"),
-        recipients=[data["to"]],
+        recipients=[data.get("to")],
         body=data.get("message", "This is a test email")
     )
 

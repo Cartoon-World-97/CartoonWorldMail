@@ -32,7 +32,6 @@ def send_mail():
         recipients=[data.get("to")],
         body=data.get("message", "This is a test email")
     )
-
     mail.send(msg)
     return jsonify({"success": True, "message": "Email sent successfully"})
 
